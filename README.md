@@ -85,4 +85,18 @@ flowchart LR
 
 ### How it works
 
-1. **10:00 (Europe/Budapest)**: an EventBridge Scheduler schedule starts
+1. **10:00 (Europe/Budapest)**: an EventBridge Scheduler schedule starts the EC2 instance.
+2. **10:05**: a second schedule sends an SSM Run Command that runs Bali as a non-root user, then shuts the server down.
+3. The server runs for only a few minutes per day.
+
+### Security design
+
+- **No inbound ports, no SSH keys**: access only through AWS Systems Manager Session Manager
+- **Least privilege IAM**: the scheduler role can only start this one instance and run only the `AWS-RunShellScript` document on it
+- **Trust policy** limited to `scheduler.amazonaws.com`, with an `aws:SourceAccount` condition (confused deputy protection)
+- **No long-term access keys**: only IAM roles with temporary STS credentials
+- **Encrypted EBS volume** (AWS KMS)
+- **Fail-safe**: 20 minute timeout, and the server shuts down even if the script fails
+- **Account security**: MFA enabled, monthly budget alert
+- **Verified with AWS CloudTrail**: the scheduled start was performed by the scheduler role (`AssumedRole`)
+
