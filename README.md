@@ -67,3 +67,22 @@ python check_db.py
 ## Author
 
 Built by Királyhidi Nóra as part of a career change toward AI and cloud development.
+
+## Deployment on AWS
+
+Bali runs automatically in AWS every weekday, with no manual steps.
+
+### Architecture
+
+```mermaid
+flowchart LR
+    A["EventBridge Scheduler<br/>10:00 Mon-Fri"] -->|StartInstances| B["EC2 instance<br/>bali-server"]
+    C["EventBridge Scheduler<br/>10:05 Mon-Fri"] -->|SendCommand| D["Systems Manager<br/>Run Command"]
+    D --> B
+    B --> E["Bali runs<br/>46 stocks to SQLite"]
+    E --> F["Server shuts itself down"]
+```
+
+### How it works
+
+1. **10:00 (Europe/Budapest)**: an EventBridge Scheduler schedule starts
