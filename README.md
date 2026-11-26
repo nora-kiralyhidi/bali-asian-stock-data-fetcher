@@ -100,3 +100,27 @@ flowchart LR
 - **Account security**: MFA enabled, monthly budget alert
 - **Verified with AWS CloudTrail**: the scheduled start was performed by the scheduler role (`AssumedRole`)
 
+### IAM permission policy (scheduler role)
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "StartBaliServer",
+            "Effect": "Allow",
+            "Action": "ec2:StartInstances",
+            "Resource": "arn:aws:ec2:eu-north-1:<ACCOUNT_ID>:instance/<INSTANCE_ID>"
+        },
+        {
+            "Sid": "RunBaliCommand",
+            "Effect": "Allow",
+            "Action": "ssm:SendCommand",
+            "Resource": [
+                "arn:aws:ec2:eu-north-1:<ACCOUNT_ID>:instance/<INSTANCE_ID",
+                "arn:aws:ssm:eu-north-1::document/AWS-RunShellScript"
+                ]
+            }
+        ]
+    }
+```
