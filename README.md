@@ -142,3 +142,22 @@ flowchart LR
     ]
 }
 ```
+
+### Daily run command
+
+```bash
+cd /home/ssm-user/bali-asian-stock-data-fetcher && sudo -u ssm-user timeout 20m .venv/bin/python asia_app.py; shutdown -h +1
+```
+
+- `&&` runs Bali only if the directory change succeeded
+- `;` makes sure the shutdown always happens, even if Bali fails
+- `sudo -u ssm-user` runs Bali as a regular user instead of root (least privilege on the server too)
+
+### AWS services used
+
+Amazon EC2 (Amazon Linux 2023, t3.micro) · Amazon EventBridge Scheduler · AWS Systems Manager (Session Manager, Run Command) · AWS IAM · AWS KMS · AWS CloudTrail · AWS Budgets
+
+### Next steps
+
+- CloudWatch Logs for the full run output and failure alerts
+- Infrastructure as Code (AWS CloudFormation)
