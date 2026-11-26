@@ -59,9 +59,9 @@ python check_db.py
 
 - [ ] Stronger data validation
 - [ ] Charts and generated reports
-- [ ] Automatic daily run
+- [x] Automatic daily run
 - [ ] Analysis of the collected data
-- [ ] Cloud deployment on AWS (scheduled run, storage)
+- [x] Cloud deployment on AWS (scheduled run, storage)
 - [ ] AI-agent functions and a multi-agent team (researcher, analyst, tester, coder, coordinator)
 
 ## Author
